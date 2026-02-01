@@ -1,16 +1,29 @@
-import React, { useState } from 'react'
-import  NoteContext  from './NoteContext'
+import { useState } from "react";
+import NoteContext from "./NoteContext";
 
+function NoteProvider({ children }) {
+  const [notes, setNotes] = useState([]);
 
-function NoteProvider({children}) {
+  const addNote = (title, content) => {
+    setNotes((prev) => [
+      ...prev,
+      {
+        id: Date.now(),
+        title,
+        content,
+      },
+    ]);
+  };
 
-    const [notes,setnotes] = useState([])
+  const deleteNote = (id) => {
+    setNotes((prev) => prev.filter((note) => note.id !== id));
+  };
 
   return (
-    <NoteContext.Provider value={{notes,setnotes}}>
-        {children}
+    <NoteContext.Provider value={{ notes, addNote, deleteNote }}>
+      {children}
     </NoteContext.Provider>
-  )
+  );
 }
 
-export default NoteProvider
+export default NoteProvider;

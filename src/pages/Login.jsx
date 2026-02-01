@@ -1,11 +1,22 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
+import './Login.css'
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  
+  // Initialize theme from localStorage
+  const [isDarkTheme, setIsDarkTheme] = useState(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      document.body.classList.add("dark-theme");
+      return true;
+    }
+    return false;
+  });
 
   const { setislogginedin } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -14,56 +25,72 @@ function Login() {
   const HARDCODED_EMAIL = "Rohit@gmail.com";
   const HARDCODED_PASSWORD = "123456";
 
+  // Toggle theme
+  const toggleTheme = () => {
+    setIsDarkTheme(!isDarkTheme);
+    if (!isDarkTheme) {
+      document.body.classList.add("dark-theme");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.body.classList.remove("dark-theme");
+      localStorage.setItem("theme", "light");
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (
-      email === HARDCODED_EMAIL &&
-      password === HARDCODED_PASSWORD
-    ) {
-      setislogginedin(true);   
-      navigate("/");        
+    if (email === HARDCODED_EMAIL && password === HARDCODED_PASSWORD) {
+      setislogginedin(true);
+      navigate("/");
     } else {
       setError("Invalid email or password");
     }
   };
 
   return (
-    <div style={{ maxWidth: "300px", margin: "50px auto" }}>
-      <h2>Login</h2>
+    <>
+      {/* Theme Toggle Button */}
+      <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">
+        {isDarkTheme ? "☀️" : "🌙"}
+      </button>
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
+      <div className="div-container">
+        <h2>NoteKeeper Login</h2>
 
-        <div>
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
+        <form className="form-container" onSubmit={handleSubmit}>
+          <div>
+            <input
+              className="input"
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
+          <div>
+            <input
+              className="input"
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
 
-        <button type="submit">Login</button>
-      </form>
+          {error && <p>{error}</p>}
 
-      <p style={{ fontSize: "12px", marginTop: "10px" }}>
-        Use: <br />
-        Email: <b>Rohit@gmail.com</b> <br />
-        Password: <b>123456</b>
-      </p>
-    </div>
+          <button className="btn" type="submit">
+            Login
+          </button>
+        </form>
+
+      
+      </div>
+    </>
   );
 }
 

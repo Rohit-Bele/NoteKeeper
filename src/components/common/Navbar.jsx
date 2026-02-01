@@ -3,9 +3,7 @@ import AuthContext from '../../context/AuthContext'
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { useContext } from "react";
-
-
-
+import './Navbar.css'
 
 function Navbar() { 
 
@@ -14,39 +12,40 @@ function Navbar() {
 
     const handleLogOut = ()=>
     {
-    setislogginedin(false)
-    navigate('/login')
+        setislogginedin(false)
+        navigate('/login')
     }
 
-
   return (
+    <nav className='Navbar-box'>
+        {/* Logo Section */}
+        <div className='navbar-logo'>
+            <span className='logo-icon'>📝</span>
+            <span className='logo-text'>NotesKeeper</span>
+        </div>
 
-    <div>
-        <ul>
-            <li>
+        {/* Heading Section */}
+        <div className='navbar-heading'>
+            <h2>Capture Your Thoughts</h2>
+        </div>
+
+        {/* Navigation Items */}
+        <ul className='ul-tag'>
+            <li className='li-tag'>
                 <NavLink to="/">Home</NavLink>
             </li>
-            <li>
+            <li className='li-tag'>
                 <NavLink to="/profile">Profile</NavLink>
             </li>
-             <li>
+            <li className='li-tag'>
                 <NavLink to="/add">Add Notes</NavLink>
             </li>
-            <li>
-                <button onClick={handleLogOut}>Logout</button>
+            <li className='li-tag'>
+                <button className='logout-btn' onClick=            {handleLogOut}>Logout</button>
             </li>
         </ul>
-    </div>
+    </nav>
   )
 }
 
 export default Navbar
-
-
-
-
-
-
-
-
-
